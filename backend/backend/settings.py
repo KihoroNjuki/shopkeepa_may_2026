@@ -55,7 +55,7 @@ INSTALLED_APPS = [
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://192.168.1.82:3000',
-    'https://stately-heliotrope-8b2566.netlify.app',
+    'https://shopkeepaapp.netlify.app',
 ]
 
 ALLOWED_HOSTS = ['*']
