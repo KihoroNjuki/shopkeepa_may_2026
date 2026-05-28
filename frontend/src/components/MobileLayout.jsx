@@ -190,40 +190,52 @@ export default function MobileLayout({ children }) {
               <div className="mobile-nav-label">Operations</div>
               {navLink(
                 businessId && branchId
-                  ? `/businesses/${businessId}/branches/${branchId}/products`
+                  ? `/businesses/${businessId}/branches/${branchId}/sales/new`
                   : '/businesses',
-                <Package size={18} />, 'Products'
+                <ShoppingCart size={18} />, 'Sell'
               )}
-              {navLink(
-                businessId && branchId
-                  ? `/businesses/${businessId}/branches/${branchId}/sales`
-                  : '/businesses',
-                <ShoppingCart size={18} />, 'Sales'
-              )}
+
               {navLink(
                 businessId && branchId
                   ? `/businesses/${businessId}/branches/${branchId}/restock/new`
                   : '/businesses',
                 <RefreshCcw size={18} />, 'Restocking'
               )}
+
+              {navLink(
+                businessId && branchId
+                  ? `/businesses/${businessId}/branches/${branchId}/products`
+                  : '/businesses',
+                <Package size={18} />, 'View Products'
+              )}
+
+              {navLink(
+                businessId && branchId
+                  ? `/businesses/${businessId}/branches/${branchId}/sales`
+                  : '/businesses',
+                <ShoppingCart size={18} />, 'Sales History'
+              )}
+              
               {navLink(
                 businessId && branchId
                   ? `/businesses/${businessId}/branches/${branchId}/analytics`
                   : businessId
                   ? `/businesses/${businessId}/analytics`
                   : '/businesses',
-                <BarChart2 size={18} />, 'Analytics'
+                <BarChart2 size={18} />, 'Performance'
               )}
+
               {navLink(
                 businessId
                   ? `/businesses/${businessId}/credit`
                   : '/businesses',
-                <CreditCard size={18} />, 'Credit'
+                <CreditCard size={18} />, 'Credit Manager'
               )}
-              {businessId && navLink(
+
+              {/* {businessId && navLink(
                 `/businesses/${businessId}/privileges`,
                 <Shield size={18} />, 'Privileges'
-              )}
+              )} */}
             </nav>
 
             <div className="mobile-drawer-bottom">
