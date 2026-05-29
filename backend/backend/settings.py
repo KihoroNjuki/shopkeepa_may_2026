@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'sales.apps.SalesConfig',
     'restock.apps.RestockingConfig',
     'credit.apps.CreditConfig',
+    'anymail',
 
 ]
 
@@ -165,11 +166,20 @@ SIMPLE_JWT = {
     'TOKEN_OBTAIN_SERIALIZER': 'auth.serializers.CustomTokenObtainPairSerializer',
 }
 
-EMAIL_BACKEND       = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST          = config('EMAIL_HOST',default='smtp.gmail.com')
-EMAIL_PORT          = config('EMAIL_PORT', default=587, cast=int)
-EMAIL_USE_TLS       = config('EMAIL_USE_TLS', default=True, cast=bool)
-EMAIL_HOST_USER     = config('EMAIL_HOST_USER')   # your gmail address
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD') # the 16-char app password
-DEFAULT_FROM_EMAIL  = config('EMAIL_HOST_USER')
-FRONTEND_URL        = config('FRONTEND_URL', default='http://localhost:3000')
+EMAIL_BACKEND = 'anymail.backends.brevo.EmailBackend'
+
+ANYMAIL = {
+    'BREVO_API_KEY': config('BREVO_API_KEY'),
+}
+
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@shopkeepa.com')
+FRONTEND_URL = config('FRONTEND_URL', default='http://localhost:3000')
+
+# EMAIL_BACKEND       = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST          = config('EMAIL_HOST',default='smtp.gmail.com')
+# EMAIL_PORT          = config('EMAIL_PORT', default=587, cast=int)
+# EMAIL_USE_TLS       = config('EMAIL_USE_TLS', default=True, cast=bool)
+# EMAIL_HOST_USER     = config('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+# DEFAULT_FROM_EMAIL  = config('EMAIL_HOST_USER')
+# FRONTEND_URL        = config('FRONTEND_URL', default='http://localhost:3000')
