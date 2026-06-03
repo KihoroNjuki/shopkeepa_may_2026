@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
   ShoppingCart, Package, RefreshCcw,
@@ -18,6 +18,7 @@ export default function BranchDashboard() {
   const [loading, setLoading]     = useState(true);
   const [error, setError]         = useState('');
   const [period, setPeriod]       = useState('month');
+  const quickActionsRef           = useRef(null);
 
   useEffect(() => { loadPrivileges(businessId); fetchAnalytics(); }, [branchId, period]);
 
@@ -48,7 +49,83 @@ export default function BranchDashboard() {
           <h1 className="page-title">Branch Dashboard</h1>
           <p className="page-sub">Overview of sales, stock and performance</p>
         </div>
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
+        
+      </div>
+
+      {/* Quick Actions */}
+      <div>
+        <h3 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--text)', fontSize: '0.95rem', fontWeight: 600 }}>Quick Actions</h3>
+        <div ref={quickActionsRef} className="card" style={{ margin:3 ,marginTop: 0, padding: '1rem', display: 'flex', gap: '1.5rem', alignItems: 'flex-start', overflowX: 'auto', overflowY: 'hidden', whiteSpace: 'nowrap', scrollBehavior: 'smooth', scrollbarWidth: 'thin', scrollbarColor: 'var(--accent) transparent' }}>
+          {(isOwner() || can('record_sales')) && (
+            <Link to={`/businesses/${businessId}/branches/${branchId}/sales/new`} style={{ textDecoration: 'none', flexShrink: 0 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                <div style={{ width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)', boxShadow: '0 2px 6px rgba(0,0,0,0.12)', transition: 'transform 0.2s' }}>
+                  <ShoppingCart size={20} color="var(--accent)" />
+                </div>
+                <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text)' }}>Sell</span>
+              </div>
+            </Link>
+          )}
+
+          {(isOwner() || can('record_restock')) && (
+            <Link to={`/businesses/${businessId}/branches/${branchId}/restock/new`} style={{ textDecoration: 'none', flexShrink: 0 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                <div style={{ width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)', boxShadow: '0 2px 6px rgba(0,0,0,0.12)', transition: 'transform 0.2s' }}>
+                  <RefreshCcw size={20} color="var(--accent)" />
+                </div>
+                <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text)' }}>Restock</span>
+              </div>
+            </Link>
+          )}
+
+          {(isOwner() || can('view_sales')) && (
+            <Link to={`/businesses/${businessId}/branches/${branchId}/sales`} style={{ textDecoration: 'none', flexShrink: 0 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                <div style={{ width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)', boxShadow: '0 2px 6px rgba(0,0,0,0.12)', transition: 'transform 0.2s' }}>
+                  <History size={20} color="var(--accent)" />
+                </div>
+                <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text)' }}>History</span>
+              </div>
+            </Link>
+          )}
+
+          {(isOwner() || can('add_products') || can('edit_products')) && (
+            <Link to={`/businesses/${businessId}/branches/${branchId}/products`} style={{ textDecoration: 'none', flexShrink: 0 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                <div style={{ width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)', boxShadow: '0 2px 6px rgba(0,0,0,0.12)', transition: 'transform 0.2s' }}>
+                  <Package size={20} color="var(--accent)" />
+                </div>
+                <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text)' }}>View Products</span>
+              </div>
+            </Link>
+          )}
+
+          {(isOwner() || can('view_analytics')) && (
+            <Link to={`/businesses/${businessId}/branches/${branchId}/analytics`} style={{ textDecoration: 'none', flexShrink: 0 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                <div style={{ width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)', boxShadow: '0 2px 6px rgba(0,0,0,0.12)', transition: 'transform 0.2s' }}>
+                  <BarChart2 size={20} color="var(--accent)" />
+                </div>
+                <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text)' }}>Analytics</span>
+              </div>
+            </Link>
+          )}
+
+          {(isOwner() || can('invite_members')) && (
+            <Link to={`/businesses/${businessId}/branches/${branchId}/members`} style={{ textDecoration: 'none', flexShrink: 0 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                <div style={{ width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)', boxShadow: '0 2px 6px rgba(0,0,0,0.12)', transition: 'transform 0.2s' }}>
+                  <Users size={20} color="var(--accent)" />
+                </div>
+                <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text)' }}>Members</span>
+              </div>
+            </Link>
+          )}
+        </div>
+      </div>
+
+      {/* Stats */}
+      <div style={{ display: 'flex', gap: '0.75rem' }}>
           <select className="form-select" style={{ width: 'auto' }}
             value={period} onChange={e => setPeriod(e.target.value)}>
             <option value="today">Today</option>
@@ -56,15 +133,13 @@ export default function BranchDashboard() {
             <option value="month">This Month</option>
             <option value="year">This Year</option>
           </select>
-          <Link to={`/businesses/${businessId}/branches/${branchId}/sales/new`}
+          {/* <Link to={`/businesses/${businessId}/branches/${branchId}/sales/new`}
             className="btn btn-primary">
             <Plus size={16} /> Record Sale
-          </Link>
+          </Link> */}
         </div>
-      </div>
-
-      {/* Stats */}
       <div className="stats-grid">
+        
         <div className="stat-card">
           <span className="stat-label">Total Revenue</span>
           <span className="stat-value">{fmt(analytics?.summary?.total_revenue)}</span>
@@ -194,60 +269,7 @@ export default function BranchDashboard() {
         </div>
       )}
 
-      {/* Quick Actions */}
-<div className="grid-3col" style={{ marginTop: '1rem' }}>
-      {(isOwner() || can('record_sales')) && (
-        <Link to={`/businesses/${businessId}/branches/${branchId}/sales/new`}
-          className="card" style={{ textDecoration: 'none', textAlign: 'center', cursor: 'pointer' }}>
-          <ShoppingCart size={28} color="var(--accent)" style={{ margin: '0 auto 0.75rem' }} />
-          <p style={{ fontWeight: 600 }}>Sell</p>
-          <p style={{ fontSize: '0.825rem', color: 'var(--muted)' }}>Add a new sale transaction</p>
-        </Link>
-      )}
 
-      {(isOwner() || can('record_restock')) && (
-        <Link to={`/businesses/${businessId}/branches/${branchId}/restock/new`}
-          className="card" style={{ textDecoration: 'none', textAlign: 'center', cursor: 'pointer' }}>
-          <RefreshCcw size={28} color="var(--accent)" style={{ margin: '0 auto 0.75rem' }} />
-          <p style={{ fontWeight: 600 }}>Restock</p>
-          <p style={{ fontSize: '0.825rem', color: 'var(--muted)' }}>Record a new restock</p>
-        </Link>
-      )}
-
-      {(isOwner() || can('view_sales')) && (
-        <Link to={`/businesses/${businessId}/branches/${branchId}/sales`}
-          className="card" style={{ textDecoration: 'none', textAlign: 'center', cursor: 'pointer' }}>
-          <History size={28} color="var(--accent)" style={{ margin: '0 auto 0.75rem' }} />
-          <p style={{ fontWeight: 600 }}>Sales History</p>
-          <p style={{ fontSize: '0.825rem', color: 'var(--muted)' }}>View past transactions</p>
-        </Link>
-      )}
-      {(isOwner() || can('add_products') || can('edit_products')) && (
-        <Link to={`/businesses/${businessId}/branches/${branchId}/products`}
-          className="card" style={{ textDecoration: 'none', textAlign: 'center', cursor: 'pointer' }}>
-          <Package size={28} color="var(--accent)" style={{ margin: '0 auto 0.75rem' }} />
-          <p style={{ fontWeight: 600 }}>View Products</p>
-          <p style={{ fontSize: '0.825rem', color: 'var(--muted)' }}>Manage product catalogue</p>
-        </Link>
-      )}
-      
-      {(isOwner() || can('view_analytics')) && (
-        <Link to={`/businesses/${businessId}/branches/${branchId}/analytics`}
-          className="card" style={{ textDecoration: 'none', textAlign: 'center', cursor: 'pointer' }}>
-          <BarChart2 size={28} color="var(--accent)" style={{ margin: '0 auto 0.75rem' }} />
-          <p style={{ fontWeight: 600 }}>Analytics</p>
-          <p style={{ fontSize: '0.825rem', color: 'var(--muted)' }}>View performance charts</p>
-        </Link>
-      )}
-      {(isOwner() || can('invite_members')) && (
-        <Link to={`/businesses/${businessId}/branches/${branchId}/members`}
-          className="card" style={{ textDecoration: 'none', textAlign: 'center', cursor: 'pointer' }}>
-          <Users size={28} color="var(--accent)" style={{ margin: '0 auto 0.75rem' }} />
-          <p style={{ fontWeight: 600 }}>Members</p>
-          <p style={{ fontSize: '0.825rem', color: 'var(--muted)' }}>Manage branch staff</p>
-        </Link>
-      )}
-    </div>
     </div>
   );
 }
