@@ -105,6 +105,10 @@ DATABASE_URL = config('DATABASE_URL', default=None)
 
 if DATABASE_URL:
     url = urllib.parse.urlparse(DATABASE_URL)
+    print(f"DB NAME: {url.path[1:]}")
+    print(f"DB USER: {url.username}")
+    print(f"DB HOST: {url.hostname}")
+    print(f"DB PORT: {url.port}")
     DATABASES = {
         'default': {
             'ENGINE':   'django.db.backends.postgresql',
