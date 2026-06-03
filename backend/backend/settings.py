@@ -14,7 +14,7 @@ from pathlib import Path
 from datetime import timedelta
 from decouple import config
 from dotenv import load_dotenv
-import os, dj_database_url
+import os, urllib.parse
 
 load_dotenv()
 
@@ -104,14 +104,23 @@ print(f"DATABASE_URL value: {config('DATABASE_URL', default='NOT SET')[:20]}..."
 DATABASE_URL = config('DATABASE_URL', default=None)
 
 if DATABASE_URL:
+    url = urllib.parse.urlparse(DATABASE_URL)
     DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
+        'default': {
+            'ENGINE':   'django.db.backends.postgresql',
+            'NAME':     url.path[1:],  # remove leading /
+            'USER':     url.username,
+            'PASSWORD': url.password,
+            'HOST':     url.hostname,
+            'PORT':     url.port or 5432,
+            'OPTIONS':  {'sslmode': 'require'},
+        }
     }
 else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+            'NAME':   BASE_DIR / 'db.sqlite3',
         }
     }
 
