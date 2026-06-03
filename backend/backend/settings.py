@@ -14,7 +14,7 @@ from pathlib import Path
 from datetime import timedelta
 from decouple import config
 from dotenv import load_dotenv
-import os
+import os, dj_database_url
 
 load_dotenv()
 
@@ -55,7 +55,7 @@ INSTALLED_APPS = [
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-    'http://192.168.1.82:3000',
+    'http://192.168.1.76:3000',
     'https://shopkeepaapp.netlify.app',
 ]
 
@@ -99,10 +99,9 @@ APPEND_SLASH = False
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL', default='sqlite:///db.sqlite3')
+    )
 }
 
 
