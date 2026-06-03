@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'auth.apps.AuthConfig',
     'rest_framework',
-    'rest_framework_simplejwt'
+    'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'business.apps.BusinessConfig',
     'products.apps.ProductsConfig',
