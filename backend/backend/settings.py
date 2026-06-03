@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'auth.apps.AuthConfig',
+    'rest_framework',
+    'rest_framework_simplejwt'
     'rest_framework_simplejwt.token_blacklist',
     'business.apps.BusinessConfig',
     'products.apps.ProductsConfig',
@@ -97,12 +99,21 @@ APPEND_SLASH = False
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+print(f"DATABASE_URL exists: {bool(config('DATABASE_URL', default=None))}")
+print(f"DATABASE_URL value: {config('DATABASE_URL', default='NOT SET')[:20]}...")
+DATABASE_URL = config('DATABASE_URL', default=None)
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL', default='sqlite:///db.sqlite3')
-    )
-}
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
